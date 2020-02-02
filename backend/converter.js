@@ -1,10 +1,10 @@
- var fs = require('fs');
- var axios = require('axios');
- let result, confidence;
- let outputJSON;
+var fs = require('fs');
+var axios = require('axios');
+let result, confidence;
+let outputJSON;
 
- axios.defaults.headers.common['Content-Type'] = "application/json";
- axios.defaults.headers.common['Authorization'] = "Bearer "/* Copy token key here */;
+axios.defaults.headers.common['Content-Type'] = "application/json";
+axios.defaults.headers.common['Authorization'] = "Bearer "/* Copy token key here */;
 // function to encode file data to base64 encoded string
 const base64_encode = (file) =>{
     // read binary data
@@ -40,15 +40,15 @@ axios.post("https://automl.googleapis.com/v1beta1/projects/766644774605/location
             if (err) console.log(err);
             else console.log('written');
     });
-        //console.log(res.data.payload[0].displayName, res.data.payload[0].classification.score);
-        //confidence = res.data.payload[0].classification.score;
+    //console.log(res.data.payload[0].displayName, res.data.payload[0].classification.score);
+    //confidence = res.data.payload[0].classification.score;
 
 
-    }).catch(function(err) {
-        console.log(err);
+}).catch(function(err) {
+    console.log(err);
 });
 
- // fs.writeFile('output.json', outputJSON, 'utf8', (err, data) => {
- //     if (err) console.log(err);
- //     else console.log('written');
- // });
+// fs.writeFile('output.json', outputJSON, 'utf8', (err, data) => {
+//     if (err) console.log(err);
+//     else console.log('written');
+// });
