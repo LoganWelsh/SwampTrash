@@ -1,227 +1,331 @@
-/*!
-
-=========================================================
-* Light Bootstrap Dashboard React - v1.3.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React, { Component } from "react";
-import ChartistGraph from "react-chartist";
-import { Grid, Row, Col, ButtonToolbar, Button } from "react-bootstrap";
-//import ImageUpload from "components/ImageUpload.jsx";
+import React, { Component } from 'react';
 import axios from 'axios';
-//import {storage} from '../firebase';
-import { Card } from "components/Card/Card.jsx";
-import { StatsCard } from "components/StatsCard/StatsCard.jsx";
-import { Tasks } from "components/Tasks/Tasks.jsx";
-import {
-  dataPie,
-  legendPie,
-  dataSales,
-  optionsSales,
-  responsiveSales,
-  legendSales,
-  dataBar,
-  optionsBar,
-  responsiveBar,
-  legendBar
-} from "variables/Variables.jsx";
-
+import {Progress} from 'reactstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+var aFile=null;
 class Dashboard extends Component {
-  createLegend(json) {
-    var legend = [];
-    for (var i = 0; i < json["names"].length; i++) {
-      var type = "fa fa-circle text-" + json["types"][i];
-      legend.push(<i className={type} key={i} />);
-      legend.push(" ");
-      legend.push(json["names"][i]);
-    }
-    return legend;
+  constructor(props) {
+    
+    super(props);
+      this.state = {
+        selectedFile: null,
+        loaded:0
+      }
+   
   }
-  
-  // state = {
-  //   selectedFile: null
-  // }
-  // fileSelectedHandler = event =>{
-  //   this.setState({
-  //   selectedFile: event.target.files[0]
-  //   })
-  // }
-  // fileUploadHandler = () =>{
-  //   axios.post('')
-  // }
-  state = { selectedFile: null }
-  fileChangedHandler = (event) => {
-    this.setState({ selectedFile: event.target.files[0] })
+  checkMimeType=(event)=>{
+    //getting file object
+    let files = event.target.files 
+    //define message container
+    let err = []
+    // list allow mime type
+   const types = ['image/png', 'image/jpeg', 'image/gif']
+    // loop access array
+    for(var x = 0; x<files.length; x++) {
+     // compare file type find doesn't matach
+         if (types.every(type => files[x].type !== type)) {
+         // create error message and assign to container   
+         err[x] = files[x].type+' is not a supported format\n';
+       }
+     };
+     for(var z = 0; z<err.length; z++) {// if message not same old that mean has error 
+         // discard selected file
+        toast.error(err[z])
+        event.target.value = null
     }
-  
-  uploadHandler = () => { const formData = new FormData()
-    formData.append(
-      'myFile',
-      this.state.selectedFile,
-      this.state.selectedFile.name
-    )
-    axios.post('my-domain.com/file-upload', formData)}
- 
+   return true;
+  }
+  maxSelectFile=(event)=>{
+    let files = event.target.files
+        if (files.length > 3) { 
+           const msg = 'Only 3 images can be uploaded at a time'
+           event.target.value = null
+           toast.warn(msg)
+           return false;
+      }
+    return true;
+ }
+ checkFileSize=(event)=>{
+  let files = event.target.files
+  let size = 2000000 
+  let err = []; 
+  for(var x = 0; x<files.length; x++) {
+  if (files[x].size > size) {
+   err[x] = files[x].type+'is too large, please pick a smaller file\n';
+ }
+};
+for(var z = 0; z<err.length; z++) {// if message not same old that mean has error 
+  // discard selected file
+ toast.error(err[z])
+ event.target.value = null
+}
+return true;
+}
+onChangeHandler=event=>{
+  var myfiles = event.target.files[0]
+  if(this.maxSelectFile(event) && this.checkMimeType(event) &&    this.checkFileSize(event)){ 
+  // if return true allow to setState
+     this.setState({
+     selectedFile: myfiles,
+     loaded:0
+  })
+  aFile=myfiles;
+  console.log(myfiles)
+
+}
+}
+  onClickHandler = () => {
+    const data = new FormData() 
+    if(this.state.selectedFile != null){
+    data.append('file,',this.state.selectedFile[0])
+  }
+  else{
+    return;
+  }
+    //console.log(data)
+    axios.post("http://localhost:8000/upload", this.state.selectedFile[0], {
+      onUploadProgress: ProgressEvent => {
+        this.setState({
+          loaded: (ProgressEvent.loaded / ProgressEvent.total*100),
+        })
+      },
+    })
+      .then(res => { // then print response status
+        console.log(res.statusText)
+        toast.success('Uploaded')
+      })
+      .catch(err => { // then print response status
+        toast.error('Upload failed')
+      })
+    }
+
   render() {
     return (
-      <div className="content">
-        <Grid fluid>
-          {/* <Row>
-            <Col lg={3} sm={6}>
-              <StatsCard
-                bigIcon={<i className="pe-7s-server text-warning" />}
-                statsText="Capacity"
-                statsValue="105GB"
-                statsIcon={<i className="fa fa-refresh" />}
-                statsIconText="Updated now"
-              />
-            </Col>
-            <Col lg={3} sm={6}>
-              <StatsCard
-                bigIcon={<i className="pe-7s-wallet text-success" />}
-                statsText="Revenue"
-                statsValue="$1,345"
-                statsIcon={<i className="fa fa-calendar-o" />}
-                statsIconText="Last day"
-              />
-            </Col>
-            <Col lg={3} sm={6}>
-              <StatsCard
-                bigIcon={<i className="pe-7s-graph1 text-danger" />}
-                statsText="Errors"
-                statsValue="23"
-                statsIcon={<i className="fa fa-clock-o" />}
-                statsIconText="In the last hour"
-              />
-            </Col>
-            <Col lg={3} sm={6}>
-              <StatsCard
-                bigIcon={<i className="fa fa-twitter text-info" />}
-                statsText="Followers"
-                statsValue="+45"
-                statsIcon={<i className="fa fa-refresh" />}
-                statsIconText="Updated now"
-              />
-            </Col>
-          </Row> */
-        //   <input type="file" name="file" onChange={this.onChangeHandler}/>   
-        //  onChangeHandler=event=>{
-
-        //   console.log(event.target.files[0])
-        //  }
-          }
-          
-<input type="file" onChange={this.fileChangedHandler}/>
-<button onClick={this.uploadHandler}>CLICK IF YOU ARE GAY</button>
-
+      <div class="container">
+	      <div class="row">
+      	  <div class="offset-md-3 col-md-12">
+               <div class="form-group files">
+                <label>Upload Your File </label>
+                <input type="file" class="form-control" multiple onChange={this.onChangeHandler}/>
+              </div>  
+              <div class="form-group">
+              <ToastContainer />
+              <Progress max="100" color="success" value={this.state.loaded} >{Math.round(this.state.loaded,2) }%</Progress>
         
-          {/* <ButtonToolbar>
-          <Button variant="primary" >fuck off</Button> 
-        </ButtonToolbar> */}
+              </div> 
+              
+              <button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>
 
-    
-          
-          
-          
-           {/* <Row>
-            <Col md={8}>
-              <Card
-                statsIcon="fa fa-history"
-                id="chartHours"
-                title="Trending Disasters"
-                category="24 Hours performance"
-                stats="Updated 3 minutes ago"
-                content={
-                  <div className="ct-chart">
-                    <ChartistGraph
-                      data={dataSales}
-                      type="Line"
-                      options={optionsSales}
-                      responsiveOptions={responsiveSales}
-                    />
-                  </div>
-                }
-                legend={
-                  <div className="legend">{this.createLegend(legendSales)}</div>
-                }
-              />
-            </Col>
-            <Col md={4}>
-              <Card
-                statsIcon="fa fa-clock-o"
-                title="Email Statistics"
-                category="Last Campaign Performance"
-                stats="Campaign sent 2 days ago"
-                content={
-                  <div
-                    id="chartPreferences"
-                    className="ct-chart ct-perfect-fourth"
-                  >
-                    <ChartistGraph data={dataPie} type="Pie" />
-                  </div>
-                }
-                legend={
-                  <div className="legend">{this.createLegend(legendPie)}</div>
-                }
-              />
-            </Col>
-          </Row> */}
-
-          {/* <Row>
-            <Col md={6}>
-              <Card
-                id="chartActivity"
-                title="2014 Sales"
-                category="All products including Taxes"
-                stats="Data information certified"
-                statsIcon="fa fa-check"
-                content={
-                  <div className="ct-chart">
-                    <ChartistGraph
-                      data={dataBar}
-                      type="Bar"
-                      options={optionsBar}
-                      responsiveOptions={responsiveBar}
-                    />
-                  </div>
-                }
-                legend={
-                  <div className="legend">{this.createLegend(legendBar)}</div>
-                }
-              />
-            </Col>
-
-            <Col md={6}>
-              <Card
-                title="Tasks"
-                category="Backend development"
-                stats="Updated 3 minutes ago"
-                statsIcon="fa fa-history"
-                content={
-                  <div className="table-full-width">
-                    <table className="table">
-                      <Tasks />
-                    </table>
-                  </div>
-                }
-              />
-            </Col>
-          </Row> */}
-        </Grid>
+	      </div>
+      </div>
       </div>
     );
   }
 }
 
-export default Dashboard;
+export default Dashboard;// /*!
+
+// =========================================================
+// * Light Bootstrap Dashboard React - v1.3.0
+// =========================================================
+
+// * Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-react
+// * Copyright 2019 Creative Tim (https://www.creative-tim.com)
+// * Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard-react/blob/master/LICENSE.md)
+
+// * Coded by Creative Tim
+
+// =========================================================
+
+// * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+// */
+// import React, { Component } from "react";
+// import ChartistGraph from "react-chartist";
+// import { Grid, Row, Col, ButtonToolbar, Button } from "react-bootstrap";
+// //import ImageUpload from "components/ImageUpload.jsx";
+// import axios from 'axios';
+// //import {storage} from '../firebase';
+// import { Card } from "components/Card/Card.jsx";
+// import { StatsCard } from "components/StatsCard/StatsCard.jsx";
+// import { Tasks } from "components/Tasks/Tasks.jsx";
+// import {
+//   dataPie,
+//   legendPie,
+//   dataSales,
+//   optionsSales,
+//   responsiveSales,
+//   legendSales,
+//   dataBar,
+//   optionsBar,
+//   responsiveBar,
+//   legendBar
+// } from "variables/Variables.jsx";
+
+// class Dashboard extends Component {
+//   // constructor(props){
+//   //   super(props);
+//   //     this.state = {
+//   //       selectedFile: null
+//   //     }
+//   // }
+//   // createLegend(json) {
+//   //   var legend = [];
+//   //   for (var i = 0; i < json["names"].length; i++) {
+//   //     var type = "fa fa-circle text-" + json["types"][i];
+//   //     legend.push(<i className={type} key={i} />);
+//   //     legend.push(" ");
+//   //     legend.push(json["names"][i]);
+//   //   }
+//   //   return legend;
+//   // }
+  
+//   // state = { selectedFile: null }
+//   // onChangeHandler = (event) => {
+//   //   console.log(event.target.files[0])
+//   //   this.setState({
+//   //     selectedFile: event.target.files[0],
+//   //     loaded: 0,
+//   //   })
+
+//   //   //this.setState({ selectedFile: event.target.files[0] })
+//   //   }
+  
+//   // uploadHandler = () => { const formData = new FormData()
+//   //   formData.append(
+//   //     'myFile',
+//   //     this.state.selectedFile,
+//   //     this.state.selectedFile.name
+//   //   )
+//   //   axios.post('my-domain.com/file-upload', formData)}
+ 
+//   //   onClickHandler = () => {
+//   //     const data = new FormData() 
+//   //     data.append('file', this.state.selectedFile)
+//   //     axios.post("http://localhost:3000/upload", data, { // receive two parameter endpoint url ,form data 
+//   //     })
+//   //     .then(res => { // then print response status
+//   //       console.log(res.statusText)
+//   //     })
+//   // }
+//   constructor(props) {
+//     super(props);
+//       this.state = {
+//         selectedFile: null,
+//         loaded:0
+//       }
+   
+//   }
+//   checkMimeType=(event)=>{
+//     //getting file object
+//     let files = event.target.files 
+//     //define message container
+//     let err = []
+//     // list allow mime type
+//    const types = ['image/png', 'image/jpeg', 'image/gif']
+//     // loop access array
+//     for(var x = 0; x<files.length; x++) {
+//      // compare file type find doesn't matach
+//          if (types.every(type => files[x].type !== type)) {
+//          // create error message and assign to container   
+//          err[x] = files[x].type+' is not a supported format\n';
+//        }
+//      };
+//      for(var z = 0; z<err.length; z++) {// if message not same old that mean has error 
+//          // discard selected file
+//         //toast.error(err[z])
+//         event.target.value = null
+//     }
+//    return true;
+//   }
+//   maxSelectFile=(event)=>{
+//     let files = event.target.files
+//         if (files.length > 3) { 
+//            const msg = 'Only 3 images can be uploaded at a time'
+//            event.target.value = null
+//            //toast.warn(msg)
+//            return false;
+//       }
+//     return true;
+//  }
+//  checkFileSize=(event)=>{
+//   let files = event.target.files
+//   let size = 2000000 
+//   let err = []; 
+//   for(var x = 0; x<files.length; x++) {
+//   if (files[x].size > size) {
+//    err[x] = files[x].type+'is too large, please pick a smaller file\n';
+//  }
+// };
+// for(var z = 0; z<err.length; z++) {// if message not same old that mean has error 
+//   // discard selected file
+//  //toast.error(err[z])
+//  event.target.value = null
+// }
+// return true;
+// }
+// onChangeHandler=event=>{
+//   var files = event.target.files
+//   if(this.maxSelectFile(event) && this.checkMimeType(event) &&    this.checkFileSize(event)){ 
+//   // if return true allow to setState
+//      this.setState({
+//      selectedFile: files,
+//      loaded:0
+//   })
+// }
+// }
+//   onClickHandler = () => {
+//     const data = new FormData() 
+//     for(var x = 0; x<this.state.selectedFile.length; x++) {
+//       data.append('file', this.state.selectedFile[x])
+//     }
+//     axios.post("http://localhost:8000/upload", data, {
+//       onUploadProgress: ProgressEvent => {
+//         this.setState({
+//           loaded: (ProgressEvent.loaded / ProgressEvent.total*100),
+//         })
+//       },
+//     })
+//       .then(res => { // then print response status
+//         //toast.success('upload success')
+//       })
+//       .catch(err => { // then print response status
+//         //toast.error('upload fail')
+//       })
+//     }
+//   render() {
+//     return (
+//       // <div className="content">
+//       //   <Grid fluid>
+          
+//       //     <form method="post" action="/upload" id="#">
+//       //      <div class="form-group files">
+//       //        <label>Upload Your File </label>
+//       //        <input type="file" class="form-control" multiple="" onChange={this.onChangeHandler}></input>
+//       //        <button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button> 
+
+//       //      </div>
+//       //  </form>
+         
+//       //   </Grid>
+//       // </div>
+//       <div class="container">
+// 	      <div class="row">
+//       	  <div class="offset-md-3 col-md-6">
+//                <div class="form-group files">
+//                 <label>Upload Your File </label>
+//                 <input type="file" class="form-control" multiple onChange={this.onChangeHandler}/>
+//               </div>  
+//               <div class="form-group">
+//               </div> 
+//               <button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>
+
+// 	      </div>
+//       </div>
+//       </div>
+//     );
+//   }
+// }
+
+// export default Dashboard;
