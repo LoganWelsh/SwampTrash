@@ -125,17 +125,13 @@ class UserProfile extends Component {
 </Col>
 <Col md={2}>
               <UserCard
-                bgImage="https://ununsplash.imgix.net/photo-1431578500526-4d9613015464?fit=crop&fm=jpg&h=300&q=75&w=400"
-                avatar={avatar}
-                name="Mike Andrew"
-                userName="michael24"
+                bgImage="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/manhattan-skyline-with-empire-state-building-royalty-free-image-960609922-1557777571.jpg?crop=0.66635xw:1xh;center,top&resize=480:*"
+                avatar={"https://media-exp1.licdn.com/dms/image/C4D03AQGQUVc5SS2bOA/profile-displayphoto-shrink_200_200/0?e=1585785600&v=beta&t=DEZlGnIF6W3DixGt71ZBLxg6YXGYX59eGVnkNiGTvrc"}
+                name="Eric De Rezende"
+                userName="ericderezende"
                 description={
                   <span>
-                    "Lamborghini Mercy
-                    <br />
-                    Your chick she so thirsty
-                    <br />
-                    I'm in that two seat Lambo"
+                    "Just enough sauce can go a long way"
                   </span>
                 }
                 socials={
