@@ -18,8 +18,9 @@
 import React, { Component } from "react";
 import ChartistGraph from "react-chartist";
 import { Grid, Row, Col, ButtonToolbar, Button } from "react-bootstrap";
-
-
+//import ImageUpload from "components/ImageUpload.jsx";
+import axios from 'axios';
+//import {storage} from '../firebase';
 import { Card } from "components/Card/Card.jsx";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
 import { Tasks } from "components/Tasks/Tasks.jsx";
@@ -47,9 +48,31 @@ class Dashboard extends Component {
     }
     return legend;
   }
-  fileSelectedHandler = event =>{
-    console.log(event);
-  }
+  
+  // state = {
+  //   selectedFile: null
+  // }
+  // fileSelectedHandler = event =>{
+  //   this.setState({
+  //   selectedFile: event.target.files[0]
+  //   })
+  // }
+  // fileUploadHandler = () =>{
+  //   axios.post('')
+  // }
+  state = { selectedFile: null }
+  fileChangedHandler = (event) => {
+    this.setState({ selectedFile: event.target.files[0] })
+    }
+  
+  uploadHandler = () => { const formData = new FormData()
+    formData.append(
+      'myFile',
+      this.state.selectedFile,
+      this.state.selectedFile.name
+    )
+    axios.post('my-domain.com/file-upload', formData)}
+ 
   render() {
     return (
       <div className="content">
@@ -98,11 +121,14 @@ class Dashboard extends Component {
         //   console.log(event.target.files[0])
         //  }
           }
-<input type="file" onChange={this.fileSelectedHandler}/>
+          
+<input type="file" onChange={this.fileChangedHandler}/>
+<button onClick={this.uploadHandler}>CLICK IF YOU ARE GAY</button>
 
-          <ButtonToolbar>
+        
+          {/* <ButtonToolbar>
           <Button variant="primary" >fuck off</Button> 
-        </ButtonToolbar>
+        </ButtonToolbar> */}
 
     
           
