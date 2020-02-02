@@ -22,7 +22,19 @@ axios.post("https://automl.googleapis.com/v1beta1/projects/766644774605/location
             }
         }
     }).then(function(res){
-        outputJSON = res.data.payload[0];
+        result = res.data.payload[0].displayName;
+        confidence = res.data.payload[0].classification.score;
+        confidence = confidence * 100;
+        confidence = Math.round(confidence);
+
+        let temp = {
+            "result" : result,
+            "confidence" : confidence
+        };
+
+        temp = JSON.stringify(temp);
+
+        outputJSON = JSON.parse(temp);
         console.log(outputJSON);
         fs.writeFile('output.json', JSON.stringify(outputJSON), 'utf8', (err, data) => {
             if (err) console.log(err);
