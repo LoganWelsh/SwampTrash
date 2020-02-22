@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "chromatic-trees-266917",
+  "private_key_id": "2faedb68c3dc67ed2fd321cd6f9c8b8e7ef25c11",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDJT3zFkcXpa8a9\niAuJrGeo+jgoP+ZtcO6rGTI8ZRcYeqbKvD/ZvGm6CyIENn8EIWXuc9HdURnPVFL/\nS8TejlWhgQZw7p58rgwzuHye5VCW7WNts33VF1zXoJSW2NlQ2+UwIT7bpH9Gn9Uy\nlZvaYYX3ObCivRaGOLyNDqaK293AZHtSyHcJi8RsUXPxDSRKdkMederHylpBhRbM\nkoTiZ+uH6RezTe4V5vyw13fIhBNHPfPbeoy0uWp49tZbGr8PdUVARWZr+Or5Vprj\n+DK+V1Usf1nb0vD1uqnXHuFnwUjT9geiAxTozxmu0IYDAyiiYXteWX/62G58ZMVS\nvSEahapxAgMBAAECggEACG6M4lWVvY4nF98v5IdVHC3G1mC+zQyy4nW+teriCcNx\nYwJ5hiwvHXzD4vtJXKntdAxj2OpBs35rr4fD6jJ6Aba+x1InTz+XAT+T8K/YLUoq\nJPkkpx1AZUOzlZHloE5ljhuGX3rHXfTp4CGGEqKNEurWrCpRXDPaKepYLW7CHgHE\nZ+a6bfgTFRv1R1I1zOuOnpPTmAee/FWfLM7ZrXtn09N0Zd5XFOpgX8m37uo3Ynox\nn2P7t3NarJvxxIwAIEEtQWMQzcVHJNxYEUj7bcYIwLcFEbf4RJ6c9BpX4pqV22lE\nYopEDVUcNidIYI/LHFDbpwoXEVj5tcG91xWGRBMkhQKBgQDlhQyxzaw11X9+pdmT\n/x+tuZQkCLRbgecY7JcpAiPa3nSW7YBbKwSMtLOeQdc5u/ZCgFWvQsf2R1CxAn+K\nI75pp0dUrWNroUU1tOmrYuBWi6fvahCeTHVF0edBj3pVaLpbLyre0Wvkv+O4i5bl\nnSzKHbMWNu5A7b4A0VFNubDnBwKBgQDgiUSNfgqLlnF9nVF9KerpISIcL7l6siGI\n4t7egMJnd0EwWhyR9gh18DGtonPu1gVgElgl9hYv1mHv9I805Z/GX/r5U1Op25zr\na5QC22AA49LdvRwiTB1r+Vh0BHBQxd7mAiAPVRxfD/yDnmPOP38eAPomq5Ha3DO4\nxV/DMDRMxwKBgQCgYWdsez6h440Sj4vJSdX2DB6DS33UD6LPnMtHwZISZ63qpQ0z\nJ40nUUHODU36rug2sfyt2ilmY5D0D73VZoKwy04h0oMNe4SkMcWymAYRE8eGmYQB\nSYYNAs7o1fxy4BqQixYW2xncn2Xd19TaoAjjNvukQ0AbKMXDRoDcoiwGUwKBgAIP\nIDLP+hbHnWjSfYHRVZcnt6Fciq3mXkpcEkEmGyJJxK5F1Uc9Y1x5hGscN0X0bn4w\nDODkPdXYeHNz4bBRfsKZ9Lo+mmDPY8QA642PJ3U6oZ9o8Y4a9pYb5kTCGamT9vRT\nBqo9VJJGmkE2vaGRkX/b8G9UWXURWeQS40rt8TzXAoGAYz8htCd649mrb2Qto2uY\nYFJDgKfaU5w/8tmPIqa20YD83iojiOInfVdsgKLfFgyW3uBP3NlE6L0+Nzqn51ud\np0zMisX97Y95rslEY+Ck+US+2St26P3Xz6b5lHqJqe56truJ2+5cGM4yd5kEh/D6\nDDfpZonjL7CIJXwa0I3/Vo0=\n-----END PRIVATE KEY-----\n",
+  "client_email": "swamp-trash@chromatic-trees-266917.iam.gserviceaccount.com",
+  "client_id": "117161518717594521221",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/swamp-trash%40chromatic-trees-266917.iam.gserviceaccount.com"
+}
